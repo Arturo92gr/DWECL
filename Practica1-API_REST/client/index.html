@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notas</title>
+    <!--<link rel="stylesheet" href="styles.css">-->
+</head>
+<body>
+    <div id="app">
+        <h1>Notas</h1>
+        <form id="noteForm">
+            <label for="type">Tipo de Nota:</label>
+            <select id="type" name="type" required>
+                <option value="normal">Normal</option>
+                <option value="critica">Crítica</option>
+            </select>
+            <label for="content">Contenido:</label>
+            <textarea id="content" name="content" required></textarea>
+            <button type="submit">Añadir</button>
+        </form>
+        <section id="notesList">
+        </section>
+    </div>
+    <script type="module" src="index.js"></script>
+</body>
+</html>
