@@ -4,8 +4,9 @@ export class NotesHandler {
         this._lastQueryStatus = null;
     }
 
-    getAllNotes(onSuccessCallback, onErrorCallback) {
-        fetch(this._url)
+    getAllNotes(month, onSuccessCallback, onErrorCallback) {                // Se añade el uso del parámetro "month"
+        const url = month ? `${this._url}?month=${month}` : this._url;
+        fetch(url)
             .then(response => response.json().then((data) => {
                 this._lastQueryStatus = true;
                 onSuccessCallback(data);
@@ -27,16 +28,16 @@ export class NotesHandler {
             },
             body: JSON.stringify(noteData)
         })
-        .then(response => response.json().then((data) => {
-            this._lastQueryStatus = true;
-            onSuccessCallback(data);
-        }, (error) => {
-            this._lastQueryStatus = false;
-            onErrorCallback('JSONException');
-        }))
-        .catch((error) => {
-            this._lastQueryStatus = false;
-            onErrorCallback('ConnectionException');
-        });
+            .then(response => response.json().then((data) => {
+                this._lastQueryStatus = true;
+                onSuccessCallback(data);
+            }, (error) => {
+                this._lastQueryStatus = false;
+                onErrorCallback('JSONException');
+            }))
+            .catch((error) => {
+                this._lastQueryStatus = false;
+                onErrorCallback('ConnectionException');
+            });
     }
 }
