@@ -1,0 +1,128 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/*----------------------------------------------------------------------------------- APP --------------------------------------------*/
+#app {
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 50px 50px 50px 50px;
+}
+
+h1 {
+    font-size: 1.8em;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/*----------------------------------------------------------------------------------- FORM --------------------------------------------*/
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+form label {
+    font-size: 0.9em;
+    color: #555;
+}
+
+form select,
+form textarea,
+form button {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 1em;
+}
+
+form select:focus,
+form textarea:focus,
+form button:focus {
+    outline: none;
+    border-color: #333;
+}
+
+form textarea {
+    resize: none;
+    height: 120px;
+    font-family: Arial, sans-serif;
+    font-size: .8rem;
+}
+
+form button {
+    background-color: #707070;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+form button:hover {
+    background-color: #555;
+}
+
+/*----------------------------------------------------------------------------------- MONTH FILTER --------------------------------------------*/
+label[for="monthFilter"] {
+    font-size: 1em;
+    margin-top: 15px;
+    display: block;
+    color: #333;
+}
+
+#monthFilter {
+    margin-top: 5px;
+    padding: 8px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 1em;
+    background-color: #f1f1f1;
+}
+
+/*----------------------------------------------------------------------------------- NOTES LIST --------------------------------------------*/
+#notesList {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.note {
+    padding: 12px;
+    border-radius: 4px;
+    background-color: #e2f1ee;
+    border: 1px solid #d0ddda;
+}
+
+.note-header {
+    font-weight: bold;
+    color: #666;
+    font-size: 0.9em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.note-content {
+    font-size: 1em;
+    color: #333;
+}
+
+.note.critica {
+    background-color: #ffefef;
+    border-color: #ffcccc;
+}

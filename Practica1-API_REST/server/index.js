@@ -1,44 +1,60 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');                                   // Para los archivos estáticos
+const path = require('path');                                                   // Para los archivos estáticos
+const mongoose = require('mongoose');
 const app = express();
 const port = 3000;
 
 app.use(cors());
-app.use(express.json());                                        // Para el parseo
-app.use(express.static(path.join(__dirname, '../client')));     // Servir archivos estáticos (index.html / index.js de cliente)
+app.use(express.json());                                                        // Para el parseo
+app.use(express.static(path.join(__dirname, '../client')));                     // Servir archivos estáticos (index.html / index.js de cliente)
+
+// Configuración de la conexión a MongoDB
+const mongoURI = 'mongodb+srv://acarmar248:Y3oqCKlFh6HMrm3a@clusternotes.s1pef.mongodb.net/?retryWrites=true&w=majority&appName=ClusterNotes';
+mongoose.connect(mongoURI)
+    .then(() => console.log('Conectado a la base de datos MongoDB'))
+    .catch(err => console.error('Error de conexión a MongoDB:', err));
+
+// Modelo de Mongoose para las Notas
+const noteSchema = new mongoose.Schema({
+    type: { type: String, required: true },
+    content: { type: String, required: true },
+    creationDate: { type: Date, default: Date.now }
+});
+const Note = mongoose.model('Note', noteSchema);                                // Crear el modelo Note
 
 const notesList = [];
 
 // Obtener
-app.get('/notes', (req, res) => {
-    // Filtro opcional
-    const { month } = req.query;
-    let filteredNotes = notesList;
+app.get('/notes', async (req, res) => {
+    try {
+        const { month } = req.query;
+        let filter = {};
 
-    // Verificar mes
-    // console.log("Mes recibido:", month);
+        if (month) {
+            const start = new Date(new Date().getFullYear(), month - 1, 1);     // Primer día del mes
+            const end = new Date(new Date().getFullYear(), month, 1);           // Primer día del siguiente mes
+            filter.creationDate = { $gte: start, $lt: end };
+        }
 
-    if (month) {
-        filteredNotes = notesList.filter(note => {
-            const noteMonth = new Date(note.creationDate).getMonth() + 1;
-            return noteMonth === parseInt(month, 10);
-        });
+        const notes = await Note.find(filter);                                  // Consulta con filtro si se proporciona
+        res.json(notes);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener las notas' });
     }
-    res.json(filteredNotes);
 });
 
 // Añadir
-app.post('/notes', (req, res) => {
+app.post('/notes', async (req, res) => {
     const { type, content } = req.body;
-    const newNote = {                           // Nueva nota con id, tipo, contenido y fecha de creación autoasignada
-        id: notesList.length + 1,
-        type,
-        content,
-        creationDate: new Date().toISOString()
-    };
-    notesList.push(newNote);                    // Agregar nota
-    res.status(201).json(newNote);
+
+    try {
+        const newNote = new Note({ type, content });
+        await newNote.save();                                                   // Guardar en BD
+        res.status(201).json(newNote);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al agregar la nota' });
+    }
 });
 
 app.listen(port, () => {
